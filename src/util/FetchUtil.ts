@@ -1,5 +1,5 @@
 
-
+const fetch = require('node-fetch');
 
 export async function postData(url = '', data = {}, token = "") {
   // Default options are marked with *

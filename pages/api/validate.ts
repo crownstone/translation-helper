@@ -1,8 +1,11 @@
 import {getData} from "../../src/util/FetchUtil";
 
+
 export default (req, res) => {
+
   return validateCrownstoneToken(req)
     .then((result) => {
+
       if (result) {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
@@ -19,8 +22,9 @@ export default (req, res) => {
 export const validateCrownstoneToken = function(req) {
   let token = req.body.token;
   if (token) {
-    return getData("http://cloud.crownstone.rocks/api/users/userId", {}, token)
+    return getData("https://cloud.crownstone.rocks/api/users/userId", {access_token: token} )
       .then((x) => {
+        console.log("x",x)
         if (x.indexOf("error") === -1) {
           return true
         }
@@ -28,7 +32,9 @@ export const validateCrownstoneToken = function(req) {
           return false;
         }
       })
-      .catch((err) => { return false; })
+      .catch((err) => {
+        console.log("ER", err)
+        return false; })
   }
   else { return Promise.resolve(false) }
 

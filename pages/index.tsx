@@ -14,11 +14,11 @@ export default class Home extends Component<any,any> {
   }
 
   render() {
-      return <Translation token={this.state.token} />
     if (this.state.token === null) {
       return <TokenValidation callback={(token) => { this.setState({token: token}); }} />;
     }
     else {
+      return <Translation token={this.state.token} />
     }
   }
 }
