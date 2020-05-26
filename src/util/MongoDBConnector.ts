@@ -2,14 +2,7 @@ const MongoClient = require('mongodb').MongoClient;
 
 export let mongoConfig = {
   name:"translation",
-  url:""
-}
-if (process.env.MONGODB_URI) {
-  mongoConfig.url = process.env.MONGODB_URI
-}
-else {
-  let config = require("./sensitive/mongo.ts").mongoConfig;
-  mongoConfig.url = config.mongoDs.url;
+  url: process.env.MONGODB_URI
 }
 
 export class MongoDbConnector {
