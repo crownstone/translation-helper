@@ -41,9 +41,9 @@ export class Translation extends Component<any, any> {
     }
     else {
       content = (
-        <div style={{height: '100vh', margin:0, padding:0}}>
+        <div>
           <TranslationStatistics />
-          <div style={{overflow:'auto', height: '100vh', padding: 5}}><TranslationList /></div>
+          <div style={{overflow:'auto', height: '99VH', padding: 5}}><TranslationList /></div>
           <style jsx global>{`
         body {
           padding:0px; margin:0px; overflow: hidden;
@@ -54,10 +54,10 @@ export class Translation extends Component<any, any> {
     }
 
     return (
-      <div id="EXTERNAL_WRAPPER" style={{height: '100vh', margin:0, padding:0}}>
-        <div tabIndex={0} onFocus={() => { console.log("RESET"); eventBus.emit("FOCUS_RESET")}}></div>
+      <div style={{height: '100vh', margin:0, padding:0}}>
+        <div tabIndex={0} style={{height:0, padding:0, margin:0}} onFocus={() => { console.log("RESET"); eventBus.emit("FOCUS_RESET")}}></div>
         {content}
-          <div tabIndex={1e8} onFocus={() => { console.log("end"); eventBus.emit("FOCUS_END")}}></div>
+        <div tabIndex={1e8} onFocus={() => { console.log("end"); eventBus.emit("FOCUS_END")}}></div>
       </div>
     )
   }

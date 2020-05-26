@@ -1,7 +1,5 @@
 import {validateCrownstoneToken} from "./validate";
-import {mongoConfig} from "./sensitive/mongo";
 import {MongoDbConnector} from "../../src/util/MongoDBConnector";
-var ObjectID = require('mongodb').ObjectID;
 
 export default (req, res) => {
   res.setHeader('Content-Type', 'application/json');
@@ -13,7 +11,7 @@ export default (req, res) => {
         // UPDATE
         let mongo = new MongoDbConnector();
         let languageCollection = null;
-        mongo.connect(mongoConfig)
+        mongo.connect()
           .then(() => {
             languageCollection = mongo.translation.collection("translations");
             return languageCollection.find({language: req.body.language}).toArray();
@@ -48,7 +46,7 @@ export default (req, res) => {
         // Handle any other HTTP method
         // GET
         let mongo = new MongoDbConnector();
-        mongo.connect(mongoConfig)
+        mongo.connect()
           .then(() => {
             let languageCollection = mongo.translation.collection("translations");
             return languageCollection.find({language: req.query.language}).toArray();
