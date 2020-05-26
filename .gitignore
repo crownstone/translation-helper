@@ -1,3 +1,5 @@
 .idea
 
 sensitive
+node_modules
+.next
