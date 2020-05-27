@@ -1,7 +1,7 @@
 const MongoClient = require('mongodb').MongoClient;
 
 export let mongoConfig = {
-  name:"translation",
+  name:"heroku_9q3jv8v5",
   url: process.env.MONGODB_URI
 }
 
