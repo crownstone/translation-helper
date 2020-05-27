@@ -2,15 +2,15 @@ const MongoClient = require('mongodb').MongoClient;
 
 export let mongoConfig = {
   name:"heroku_9q3jv8v5",
-  url: process.env.MONGODB_URI
+  url: process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/heroku_9q3jv8v5"
 }
 
 export class MongoDbConnector {
 
-  translation = null;
+  database = null;
   mongoClient = null;
 
-  connect(config = {}) {
+  connect() {
     return new Promise((resolve, reject) => {
 
       let url = mongoConfig.url;
@@ -21,7 +21,7 @@ export class MongoDbConnector {
 
         console.log(new Date().valueOf() + " Connector: Connected successfully to mongo server");
 
-        this.translation = client.db(mongoConfig.name);
+        this.database = client.db(mongoConfig.name);
         this.mongoClient = client;
 
         resolve();

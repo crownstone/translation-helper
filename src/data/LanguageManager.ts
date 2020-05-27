@@ -62,7 +62,7 @@ export class LanguageManager {
 
       Object.keys(content[file]).forEach((key) => {
         if (typeof content[file][key] === "function") {
-          resultData[file][key] = content[file][key]("|VAR_1|","|VAR_2|","|VAR_3|","|VAR_4|","|VAR_5|","|VAR_6|")
+          resultData[file][key] = content[file][key]("|VAR_1|","|VAR_2|","|VAR_3|","|VAR_4|","|VAR_5|","|VAR_6|","|VAR_7|","|VAR_8|","|VAR_9|","|VAR_10|","|VAR_11|","|VAR_12|")
         }
       })
 

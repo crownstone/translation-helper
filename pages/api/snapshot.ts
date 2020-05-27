@@ -13,7 +13,7 @@ export default (req, res) => {
         let languageCollection = null;
         mongo.connect()
           .then(() => {
-            languageCollection = mongo.translation.collection("translations");
+            languageCollection = mongo.database.collection("translations");
             return languageCollection.find({language: req.body.language}).toArray();
           })
           .then((data) => {
@@ -48,7 +48,7 @@ export default (req, res) => {
         let mongo = new MongoDbConnector();
         mongo.connect()
           .then(() => {
-            let languageCollection = mongo.translation.collection("translations");
+            let languageCollection = mongo.database.collection("translations");
             return languageCollection.find({language: req.query.language}).toArray();
           })
           .then((result) => {

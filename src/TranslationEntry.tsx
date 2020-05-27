@@ -3,18 +3,21 @@ import {LANGUAGE_MANAGER} from "./Translation";
 import {colors} from "./styles";
 import {eventBus} from "./util/EventBus";
 
+const VARS = ["|VAR_1|","|VAR_2|","|VAR_3|","|VAR_4|","|VAR_5|","|VAR_6|","|VAR_7|","|VAR_8|","|VAR_9|","|VAR_10|","|VAR_11|","|VAR_12|"]
 
 export class TranslationEntry extends Component<any, any> {
 
   element = null;
   initialValue = null;
   nameInput = null;
+  hasVars = {}
 
   constructor(props) {
     super(props);
 
     this.element      = LANGUAGE_MANAGER.getElement(this.props.language, this.props.file, this.props.entryKey);
     this.initialValue = this.element.value;
+    VARS.forEach((VAR) => { this.hasVars[VAR] = this.initialValue.indexOf(VAR) !== -1; });
     this.state        = { value: this.initialValue, shouldBeTheSame: this.element.shouldBeTheSame };
   }
 
@@ -45,6 +48,17 @@ export class TranslationEntry extends Component<any, any> {
               eventBus.emit("FOCUS", {file: this.props.file, language: this.props.langauge, key: this.props.entryKey, type:"input"})
             }}
             onBlur={() => {
+              for (let i = 0; i < VARS.length; i++) {
+                let VAR = VARS[i];
+                if (this.hasVars[VAR]) {
+                  if (this.state.value.indexOf(VAR) === -1) {
+                    alert("You cannot remove " + VAR + " from the translation. Reverting...")
+                    this.setState({value: this.initialValue});
+                    return;
+                  }
+                }
+              }
+
               this.element.save(this.state.value);
               this.props.refresh()
             }}
