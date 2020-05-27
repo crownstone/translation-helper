@@ -3,7 +3,6 @@ import {LanguageManager} from "./data/LanguageManager";
 import {TranslationList} from "./TranslationList";
 import {TranslationStatistics} from "./TranslationStatistics";
 
-import keycharm from "keycharm";
 import {eventBus} from "./util/EventBus";
 import {FocusManager} from "./focusManager/FocusManager";
 
