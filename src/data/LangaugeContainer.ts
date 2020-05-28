@@ -1,7 +1,9 @@
 import {postDataText} from "../util/FetchUtil";
 import {SHOULD_BE_THE_SAME} from "./LanguageManager";
 import {eventBus} from "../util/EventBus";
+import {Util} from "../util/Util";
 
+export const VARS = ["|VAR_1|","|VAR_2|","|VAR_3|","|VAR_4|","|VAR_5|","|VAR_6|","|VAR_7|","|VAR_8|","|VAR_9|","|VAR_10|","|VAR_11|","|VAR_12|"]
 
 export class LanguageContainer {
 
@@ -35,6 +37,56 @@ export class LanguageContainer {
       .then(() => {
         eventBus.emit("DATA_UPDATED");
       })
+  }
+
+  toFileFormat() {
+    let translationData = this.data;
+    let resultString = 'export default {\n';
+    let indent = "  "
+    let keys = Object.keys(translationData);
+    keys.sort();
+
+    let keySizeMax = 0;
+    keys.forEach((key) => {
+      let source = translationData[key]
+      let subKeys = Object.keys(source);
+      subKeys.forEach((subKey) => {
+        keySizeMax = Math.max(keySizeMax, subKey.length)
+      })
+    })
+
+    keys.forEach((key) => {
+      resultString += indent + key + ":{\n"
+      let source = translationData[key]
+      let subKeys = Object.keys(source);
+      subKeys.forEach((subKey) => {
+        if (subKey === "__filename") {
+          resultString += indent + indent + Util.padd(subKey + ":", keySizeMax + 1) + " \"" + String(source[subKey]) + "\",\n"
+        }
+        else if (subKey === "__stringSameAsBaseLanguage") {
+          resultString += indent + indent + subKey + ": {\n"
+          Object.keys(source[subKey]).forEach((sameCheck) => {
+            resultString += indent + indent + indent + Util.padd(sameCheck + ":", keySizeMax ) + source[subKey][sameCheck] +",\n"
+          });
+          resultString += indent + indent + "},\n"
+        }
+        else {
+
+          let str = String(source[subKey])
+
+          str = str.replace(/(\n)/g, "\\n")
+          for (let i = 0; i < VARS.length; i++) {
+            str = str.replace(VARS[i],"\" + arguments[" + i + "] + \"");
+          }
+
+          resultString += indent + indent + Util.padd(subKey + ":", keySizeMax + 1) + "function() { return \""+ str + "\"; },\n"
+        }
+      })
+      resultString += indent + "},\n"
+    })
+
+    resultString += "}";
+    return resultString;
   }
 }
 

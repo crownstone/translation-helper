@@ -6,6 +6,13 @@ export default (req, res) => {
   return validateCrownstoneToken(req)
     .then((result) => {
       if (!result) { throw "Unauthorized" }
+      let validationKey = process.env.ADMIN_KEY || "helloWorldIMIsTestMcTestFace"
+      if (req.body.key !== validationKey) {
+        res.setHeader('Content-Type', 'application/json');
+        res.statusCode = 400;
+        res.end(JSON.stringify([]));
+        return;
+      }
       if (req.method === 'POST') {
         // Process a POST request
         // UPDATE
@@ -18,19 +25,7 @@ export default (req, res) => {
           })
           .then((data) => {
             if (data.length > 0) {
-              return languageCollection.updateOne(
-                {_id: data[0]._id},
-                {$set: {
-                  language: req.body.language,
-                  data: req.body.data,
-                }
-              })
-            }
-            else {
-              return languageCollection.insert({
-                language: req.body.language,
-                data: req.body.data,
-              });
+              return languageCollection.deleteOne({_id: data[0]._id})
             }
           })
           .then((result) => {
@@ -39,31 +34,13 @@ export default (req, res) => {
             res.end();
           })
           .catch((err) => {
-            res.setHeader('Content-Type', 'application/json');
-            res.statusCode = 500;
-            res.end();
-          })
-      }
-      else if (req.method === "GET") {
-        // Handle any other HTTP method
-        // GET
-        let mongo = new MongoDbConnector();
-        mongo.connect()
-          .then(() => {
-            let languageCollection = mongo.database.collection("translations");
-            return languageCollection.find({language: req.query.language}).toArray();
-          })
-          .then((result) => {
-            mongo.close()
-
-            res.statusCode = 200;
-            res.end(JSON.stringify(result));
+            console.log("ERR", err)
           })
       }
       else {
         res.setHeader('Content-Type', 'application/json');
         res.statusCode = 400;
-        res.end(JSON.stringify([]));
+        res.end();
       }
 
     })

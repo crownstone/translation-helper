@@ -2,8 +2,9 @@ import React, {Component} from "react";
 import {LANGUAGE_MANAGER} from "./Translation";
 import {colors} from "./styles";
 import {eventBus} from "./util/EventBus";
+import {VARS} from "./data/LangaugeContainer";
 
-const VARS = ["|VAR_1|","|VAR_2|","|VAR_3|","|VAR_4|","|VAR_5|","|VAR_6|","|VAR_7|","|VAR_8|","|VAR_9|","|VAR_10|","|VAR_11|","|VAR_12|"]
+
 
 export class TranslationEntry extends Component<any, any> {
 
@@ -22,7 +23,6 @@ export class TranslationEntry extends Component<any, any> {
   }
 
   componentDidMount(): void {
-    console.log("initialFocus", this.props.language, this.props.initialFocus, this.props.translationRequired, this.props.entryKey)
     if (this.props.initialFocus) {
       this.nameInput.focus();
       this.nameInput.select()

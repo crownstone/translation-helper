@@ -1,5 +1,6 @@
 import {downloadContent, getData, postDataText} from "../util/FetchUtil";
 import {LanguageContainer} from "./LangaugeContainer";
+import {Util} from "../util/Util";
 
 
 export const LANGUAGES = {
@@ -19,32 +20,40 @@ export class LanguageManager {
 
   async init(token) {
     this.token = token;
+    let nl_nl = {};
+    let en_us = {};
 
-    let nl_nl;
-    let en_us = await this.download(LANGUAGES.en_us);
-    let nlFromDatabase = await this.getFromDatabase(LANGUAGES.nl_nl);
-    if (!nlFromDatabase) {
-      nl_nl = await this.download(LANGUAGES.nl_nl);
+    try {
+      let en_us = await this.download(LANGUAGES.en_us);
+      let nlFromDatabase = await this.getFromDatabase(LANGUAGES.nl_nl);
+      if (!nlFromDatabase) {
+        nl_nl = await this.download(LANGUAGES.nl_nl);
+      }
+      else {
+        nl_nl = nlFromDatabase;
+      }
+      this.containers[LANGUAGES.en_us] = new LanguageContainer(LANGUAGES.en_us, en_us, this.token);
+      this.containers[LANGUAGES.nl_nl] = new LanguageContainer(LANGUAGES.nl_nl, nl_nl, this.token);
     }
-    else {
-      nl_nl = nlFromDatabase;
+    catch {
+      alert("Not authorized")
+      this.containers[LANGUAGES.en_us] = new LanguageContainer(LANGUAGES.en_us, en_us, this.token);
+      this.containers[LANGUAGES.nl_nl] = new LanguageContainer(LANGUAGES.nl_nl, nl_nl, this.token);
     }
-    this.containers[LANGUAGES.en_us] = new LanguageContainer(LANGUAGES.en_us, en_us, this.token);
-    this.containers[LANGUAGES.nl_nl] = new LanguageContainer(LANGUAGES.nl_nl, nl_nl, this.token);
   }
 
 
   async download(language) {
     if (language === LANGUAGES.en_us) {
-      return await this._downloadFile('https://raw.githubusercontent.com/crownstone/crownstone-app/master/js/localization/en/us/en_us.ts')
+      return await this._downloadFileFromGit('https://raw.githubusercontent.com/crownstone/crownstone-app/master/js/localization/en/us/en_us.ts')
     }
     else if (language === LANGUAGES.nl_nl) {
-      return await this._downloadFile('https://raw.githubusercontent.com/crownstone/crownstone-app/master/js/localization/nl/nl/nl_nl.ts')
+      return await this._downloadFileFromGit('https://raw.githubusercontent.com/crownstone/crownstone-app/master/js/localization/nl/nl/nl_nl.ts')
     }
   }
 
 
-  async _downloadFile(url) {
+  async _downloadFileFromGit(url) {
     let data = await downloadContent( url );
     let resultData = {};
 
@@ -69,6 +78,11 @@ export class LanguageManager {
     })
 
     return resultData;
+  }
+
+  downloadLanguageFile(language: string) {
+    let string = this.containers[language].toFileFormat();
+    Util.download(string, language + ".ts")
   }
 
   async getFromDatabase(language) {

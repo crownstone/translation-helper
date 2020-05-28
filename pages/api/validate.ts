@@ -20,11 +20,10 @@ export default (req, res) => {
 }
 
 export const validateCrownstoneToken = function(req) {
-  let token = req.body.token;
+  let token = req.body.token || req.query.token;
   if (token) {
     return getData("https://cloud.crownstone.rocks/api/users/userId", {access_token: token} )
       .then((x) => {
-        console.log("x",x)
         if (x.indexOf("error") === -1) {
           return true
         }
@@ -33,8 +32,8 @@ export const validateCrownstoneToken = function(req) {
         }
       })
       .catch((err) => {
-        console.log("ER", err)
-        return false; })
+        return false;
+      })
   }
   else { return Promise.resolve(false) }
 

@@ -1,7 +1,7 @@
 
 const fetch = require('node-fetch');
 
-export async function postData(url = '', data = {}, token = "") {
+export async function postData(url = '', data = {}, token = "", raw=false) {
   // Default options are marked with *
   const response = await fetch(url, {
     method: 'POST', // *GET, POST, PUT, DELETE, etc.
@@ -17,6 +17,9 @@ export async function postData(url = '', data = {}, token = "") {
     referrer: 'no-referrer', // no-referrer, *client
     body: JSON.stringify(data) // body data type must match "Content-Type" header
   });
+  if (raw) {
+    return response;
+  }
   return await response.json(); // parses JSON response into native JavaScript objects
 }
 
@@ -41,13 +44,18 @@ export async function postDataText(url = '', data = {}, token = "") {
   return await response.text(); // parses JSON response into native JavaScript objects
 }
 export async function getData(url = '', data = {}) {
-  const response = await fetch(_appendToURL(url, data), { method: 'GET' });
+  const response = await fetch(_appendToURL(url, data), { method: 'GET', cache: 'no-cache', });
+  if (response.status !== 200 && response.status !== 204) {
+    throw "Not Authorized";
+  }
   return await response.text(); // parses JSON response into native JavaScript objects
 }
 
 
 export async function downloadContent(url) {
-  const response = await fetch(url);
+  const response = await fetch(url, {
+    cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+  });
   return await response.text(); // parses JSON response into native JavaScript objects
 }
 

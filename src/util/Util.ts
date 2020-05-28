@@ -1,6 +1,8 @@
 
 interface utilType {
   getUUID: (() => string),
+  padd: ((x: string, size: number) => string),
+  download: ((data:string, filename:string) => void)
 }
 
 /**
@@ -20,4 +22,29 @@ export const Util: utilType = {
       S4() + S4() + S4()
     );
   },
+
+
+  padd: function (x, size) {
+    if (x === "__filename:") {
+      return x;
+    }
+    while (x.length < size) {
+      x += " ";
+    }
+    return x
+  },
+
+  download: function(data, fileName) {
+    var dlAnchorElem = document.getElementById('downloadAnchorElem');
+    let blob = new Blob([data], {type: "octet/stream"});
+    let url = window.URL.createObjectURL(blob);
+    // @ts-ignore
+    dlAnchorElem.href = url;
+    // @ts-ignore
+    dlAnchorElem.download = fileName;
+    dlAnchorElem.click();
+    window.URL.revokeObjectURL(url);
+  },
+
+
 }

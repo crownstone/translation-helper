@@ -7,7 +7,7 @@ import {eventBus} from "./util/EventBus";
 const keyItemStyle = {padding:5};
 const subKeyStyle : CSSProperties = {margin:0, fontSize:15, fontWeight:'bold'};
 
-const clickStyle = {
+export const clickStyle = {
   cursor:"pointer",
   userSelect: "none"
 }
