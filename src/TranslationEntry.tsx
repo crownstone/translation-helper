@@ -3,6 +3,7 @@ import {LANGUAGE_MANAGER} from "./Translation";
 import {colors} from "./styles";
 import {eventBus} from "./util/EventBus";
 import {VARS} from "./data/LangaugeContainer";
+import {LANGUAGES} from "./data/LanguageManager";
 
 
 
@@ -12,14 +13,21 @@ export class TranslationEntry extends Component<any, any> {
   initialValue = null;
   nameInput = null;
   hasVars = {}
+  originalLength = 0;
+  breaklines = 0;
 
   constructor(props) {
     super(props);
 
+    let originalLanguageElement = LANGUAGE_MANAGER.getElement(LANGUAGES.en_us, this.props.file, this.props.entryKey).value;
+    this.breaklines = originalLanguageElement.split("\n").length - 1;
+    this.originalLength = originalLanguageElement.length - 50*this.breaklines;
+
+
     this.element      = LANGUAGE_MANAGER.getElement(this.props.language, this.props.file, this.props.entryKey);
     this.initialValue = this.element.value;
     VARS.forEach((VAR) => { this.hasVars[VAR] = this.initialValue.indexOf(VAR) !== -1; });
-    this.state        = { value: this.initialValue, shouldBeTheSame: this.element.shouldBeTheSame };
+    this.state        = { value: this.initialValue, shouldBeTheSame: this.element.shouldBeTheSame, backgroundColor: null };
   }
 
   componentDidMount(): void {
@@ -34,17 +42,25 @@ export class TranslationEntry extends Component<any, any> {
     if (this.props.language == LANGUAGE_MANAGER.baseLanguage) {
       color = "#fff"
     }
+    if (this.state.backgroundColor) {
+      color = this.state.backgroundColor;
+    }
+
+    let textAreaHeight = Math.ceil(this.originalLength/85)*20 + 20*this.breaklines;
+
     return (
-      <div style={{paddingLeft: 10}}>
-        <p style={{width:40, display: 'inline-block', margin:0, fontSize:12, }}>{this.props.language}</p>
+      <div style={{paddingLeft: 10, verticalAlign:'middle', height:textAreaHeight + 6}}>
+        <div style={{width:40, height:textAreaHeight, float:'left', fontSize:12, verticalAlign:"middle", lineHeight:textAreaHeight+"px"}}>{this.props.language}</div>
         <div style={{width:1000, display: 'inline-block'}}>
           <textarea
             ref={(input) => { this.nameInput = input; }}
-            style={{width:800, height:25, backgroundColor: color, display: "inline-block",}}
+            style={{width:800, height:textAreaHeight, backgroundColor: color, display: "inline-block",}}
             value={this.state.value}
             onChange={(e) => { this.setState({value: e.target.value}) }}
             disabled={this.props.locked}
             onFocus={() => {
+              this.nameInput.select()
+              this.setState({backgroundColor: colors.lightBlue.hex})
               eventBus.emit("FOCUS", {file: this.props.file, language: this.props.langauge, key: this.props.entryKey, type:"input"})
             }}
             onBlur={() => {
@@ -53,11 +69,12 @@ export class TranslationEntry extends Component<any, any> {
                 if (this.hasVars[VAR]) {
                   if (this.state.value.indexOf(VAR) === -1) {
                     alert("You cannot remove " + VAR + " from the translation. Reverting...")
-                    this.setState({value: this.initialValue});
+                    this.setState({value: this.initialValue, backgroundColor:null});
                     return;
                   }
                 }
               }
+              this.setState({backgroundColor:null});
 
               this.element.save(this.state.value);
               this.props.refresh()
