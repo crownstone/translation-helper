@@ -129,7 +129,7 @@ export class TranslationFile extends Component<any, any> {
     if (this.state.open) {
       divStyle = openStyle;
     }
-    else if (this.state.translationRequired === false) {
+    else if (this.state.translationsRequired === false) {
       divStyle = closedFinishedStyle
     }
 
