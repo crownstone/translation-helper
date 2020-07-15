@@ -73,8 +73,8 @@ export class Translation extends Component<any, any> {
           <p>
             - If a translation is the same between english and dutch, use the checkbox “is the same”. <br/>
             - Try to roughly match the number of letters used in the english text. The UI is built to facilitate the size of the text.<br/>
-            - Press “Tab” to quickly go to the next line that needs to be translated.<br/>
-            - Sometimes, the item |VAR_1| is in the text. This is an external variable that will be inserted at that location. You must not remove it, but you can move it around.<br/>
+            - Press <b>“Tab”</b> to quickly go to the next line that needs to be translated.<br/>
+            - Sometimes, the item <b>|VAR_1|</b> is in the text. This is an external variable that will be inserted at that location. You must not remove it, but you can move it around.<br/>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Example: “Hello |VAR_1|” will become “Hello Alex” in the app.<br/>
             - A Crownstone communicates to the user from the I-point of view. “I will dim to 50%”. We try to have the communication casual, upbeat and friendly.<br/>
           </p>

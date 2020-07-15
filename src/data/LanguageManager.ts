@@ -119,6 +119,8 @@ export class LanguageManager {
   itemTranslationRequired(file, key, language) {
     if (language === this.baseLanguage) { return false; }
     let base = this.containers[this.baseLanguage].data[file][key];
+    if (this.containers[language].data[file] === undefined) { return false }
+
     let otherLanguage = this.containers[language].data[file][key];
 
     if (base === otherLanguage) {
@@ -130,7 +132,6 @@ export class LanguageManager {
   }
 
   translationsRequired(file) {
-
     let required  = false;
     let languages = Object.keys(this.containers);
     let keyArray  = this.getKeyArray(file);
