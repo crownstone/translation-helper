@@ -124,6 +124,13 @@ export class TranslationFile extends Component<any, any> {
     return entries;
   }
 
+  _getStatistics() {
+    if (LANGUAGE_MANAGER.statistics.files[this.props.file] !== undefined) {
+      return LANGUAGE_MANAGER.statistics.files[this.props.file].keysTranslated + "/" +LANGUAGE_MANAGER.statistics.files[this.props.file].keyCount
+    }
+    return "UNKNOWN";
+  }
+
   render() {
     let divStyle = closedStyle;
     if (this.state.open) {
@@ -137,7 +144,7 @@ export class TranslationFile extends Component<any, any> {
       <div style={this.state.open ? openBackground : {}}>
         <div onClick={this._clickHandler} style={divStyle}>
           <div style={{float:'left'}}>{this.props.file}</div>
-          <div style={{float:'right'}}>{LANGUAGE_MANAGER.statistics.files[this.props.file].keysTranslated + "/" +LANGUAGE_MANAGER.statistics.files[this.props.file].keyCount }</div>
+          <div style={{float:'right'}}>{this._getStatistics()}</div>
         </div>
         { this.state.open && <div style={{paddingLeft: 20}}>{this.getEntries()}</div> }
       </div>
