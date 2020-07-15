@@ -72,14 +72,14 @@ export class LanguageContainer {
         }
         else {
 
-          let str = String(source[subKey])
-
+          let str = JSON.stringify(source[subKey])
+          // console.log( String(source[subKey]),  )
           str = str.replace(/(\n)/g, "\\n")
           for (let i = 0; i < VARS.length; i++) {
             str = str.replace(VARS[i],"\" + arguments[" + i + "] + \"");
           }
 
-          resultString += indent + indent + Util.padd(subKey + ":", keySizeMax + 1) + "function() { return \""+ str + "\"; },\n"
+          resultString += indent + indent + Util.padd(subKey + ":", keySizeMax + 1) + "function() { return "+ str + "; },\n"
         }
       })
       resultString += indent + "},\n"
