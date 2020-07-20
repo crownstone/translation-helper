@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {LanguageManager} from "./data/LanguageManager";
+import {LanguageManager, LANGUAGES} from "./data/LanguageManager";
 import {TranslationList} from "./TranslationList";
 import {TranslationStatistics} from "./TranslationStatistics";
 
@@ -14,12 +14,14 @@ export const LANGUAGE_MANAGER = new LanguageManager();
 export class Translation extends Component<any, any> {
 
   eventCleanUp = null;
+  searchInput = null;
 
   constructor(props) {
     super(props)
 
     this.state = {
-      initialized: false
+      initialized: false,
+      results: []
     }
   }
 
@@ -40,6 +42,23 @@ export class Translation extends Component<any, any> {
   componentWillUnmount(): void {
     this.eventCleanUp();
     FocusManager.clean();
+  }
+
+  handleSearch(e) {
+    if (e.length > 2) {
+      let matches = LANGUAGE_MANAGER.find(LANGUAGES.nl_nl, e);
+      let result = [];
+      let i = 0;
+      matches.forEach((m) => {
+        result.push(<div key={m.file+m.item} style={{width: 700, height: 30, padding:5, backgroundColor: i % 2 === 0 ? "#fff" : '#ddd', cursor: 'pointer'}} onClick={() => {
+          eventBus.emit("SetFocus"+m.file);
+          setTimeout(() => {console.log('emit', "SetFocus"+LANGUAGES.nl_nl + m.file + m.item); eventBus.emit("SetFocus"+LANGUAGES.nl_nl + m.file + m.item) }, 50);
+          this.setState({results: []});
+        }}><b>{m.file}</b>: {m.content}</div>)
+        i++
+      })
+      this.setState({results: result})
+    }
   }
 
   render() {
@@ -80,6 +99,15 @@ export class Translation extends Component<any, any> {
           </p>
         </div>
         <div tabIndex={0} style={{height:0, padding:0, margin:0}} onFocus={() => { console.log("RESET"); eventBus.emit("FOCUS_RESET")}}></div>
+        <div style={{padding:10, position:'relative'}}>
+          <b>Search:</b> <input
+          ref={(input) => { this.searchInput = input; }}
+          style={{width:500, height:30}}
+          onChange={(e) => { this.handleSearch(e.target.value) }}
+          onClick={(e) => { if (this.state.results.length === 0) { this.searchInput.value = ''}}}
+        />
+          <div style={{zIndex: 1e9, position:"absolute", top: 50, left:90, width: 700, height: this.state.results.length * 40 + 30, padding:10, backgroundColor: "#eee", boxShadow: "2px 2px 10px rgba(0,0,0,0.5)", display: this.state.results.length > 0 ? 'block' : 'none'}}>{this.state.results}</div>
+        </div>
         {content}
         <div tabIndex={1e8} onFocus={() => { console.log("end"); eventBus.emit("FOCUS_END")}}></div>
         <a id="downloadAnchorElem" style={{display:"none"}}></a>

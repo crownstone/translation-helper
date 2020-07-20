@@ -15,6 +15,7 @@ export class TranslationEntry extends Component<any, any> {
   hasVars = {}
   originalLength = 0;
   breaklines = 0;
+  cleanup=[]
 
   constructor(props) {
     super(props);
@@ -35,6 +36,11 @@ export class TranslationEntry extends Component<any, any> {
       this.nameInput.focus();
       this.nameInput.select()
     }
+    this.cleanup.push(eventBus.on("SetFocus" +this.props.language+this.props.file+this.props.entryKey, () => { this.nameInput.focus();}));
+  }
+
+  componentWillUnmount() {
+    this.cleanup.forEach((u) => { u(); })
   }
 
   render() {

@@ -1,6 +1,7 @@
 import {downloadContent, getData, postDataText} from "../util/FetchUtil";
 import {LanguageContainer} from "./LangaugeContainer";
 import {Util} from "../util/Util";
+import {match} from "assert";
 
 
 export const LANGUAGES = {
@@ -97,13 +98,44 @@ export class LanguageManager {
     }
   }
 
+  find(language, string) {
+    let result = [];
 
-  getFileArray() {
-    return Object.keys(this.containers[this.baseLanguage].data);
+    if (this.containers[language] === undefined) {
+      return result
+    }
+
+    let matchCount = 0;
+    let data = this.containers[language].data
+    let fileArray = this.getFileArray(language);
+    for (let i = 0; i < fileArray.length; i++) {
+      let file = fileArray[i];
+      let itemArray = this.getKeyArray(file, language);
+      for (let j = 0; j < itemArray.length; j++) {
+        let item = itemArray[j];
+        let content = data[file][item];
+        if (typeof content === "string") {
+          if (content.indexOf(string) !== -1) {
+            result.push({file, item, content});
+            matchCount++;
+            if (matchCount > 10) {
+              break;
+            }
+          }
+        }
+      }
+    }
+
+    return result;
   }
 
-  getKeyArray(file) {
-    return Object.keys(this.containers[this.baseLanguage].data[file]);
+
+  getFileArray(language = this.baseLanguage) {
+    return Object.keys(this.containers[language].data);
+  }
+
+  getKeyArray(file, language = this.baseLanguage) {
+    return Object.keys(this.containers[language].data[file]);
   }
 
   getLanguages() {
