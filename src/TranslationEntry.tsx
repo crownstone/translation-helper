@@ -46,7 +46,7 @@ export class TranslationEntry extends Component<any, any> {
       color = this.state.backgroundColor;
     }
 
-    let textAreaHeight = Math.ceil(this.originalLength/85)*20 + 20*this.breaklines;
+    let textAreaHeight = Math.max(20, Math.ceil(this.originalLength/85)*20 + 20*this.breaklines);
 
     return (
       <div style={{paddingLeft: 10, verticalAlign:'middle', height:textAreaHeight + 6}}>
