@@ -22,6 +22,6 @@
     "typescript": "^3.9.3"
   },
   "engines": {
-    "node": ">12.14.x"
+    "node": ">=12.14.x"
   }
 }

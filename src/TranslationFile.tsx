@@ -64,6 +64,8 @@ export class TranslationFile extends Component<any, any> {
   }
 
   componentDidMount(): void {
+    this.cleanup.push(eventBus.on("COLLAPSE_ALL",   () => { this.setState({open:false});  }));
+    this.cleanup.push(eventBus.on("EXPAND_ALL",   () => { this.setState({open:true});  }));
     this.cleanup.push(eventBus.on("SetFocus" + this.props.file,   () => { this.setState({open:true});  }));
     this.cleanup.push(eventBus.on("CloseFocus" + this.props.file, () => { this.setState({open:false}); }));
   }

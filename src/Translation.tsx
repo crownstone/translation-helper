@@ -98,7 +98,7 @@ export class Translation extends Component<any, any> {
             - A Crownstone communicates to the user from the I-point of view. “I will dim to 50%”. We try to have the communication casual, upbeat and friendly.<br/>
           </p>
         </div>
-        <div tabIndex={0} style={{height:0, padding:0, margin:0}} onFocus={() => { console.log("RESET"); eventBus.emit("FOCUS_RESET")}}></div>
+        <div tabIndex={0} style={{height:0, padding:0, margin:0}} onFocus={() => {eventBus.emit("FOCUS_RESET")}}></div>
         <div style={{padding:10, position:'relative'}}>
           <b>Search:</b> <input
           ref={(input) => { this.searchInput = input; }}
@@ -106,6 +106,9 @@ export class Translation extends Component<any, any> {
           onChange={(e) => { this.handleSearch(e.target.value) }}
           onClick={(e) => { if (this.state.results.length === 0) { this.searchInput.value = ''}}}
         />
+          &nbsp;
+          <input type={"button"} value={"Expand all"}   onClick={() => { eventBus.emit("EXPAND_ALL") }} />&nbsp;
+          <input type={"button"} value={"Collapse all"} onClick={() => { eventBus.emit("COLLAPSE_ALL") }} />
           <div style={{zIndex: 1e9, position:"absolute", top: 50, left:90, width: 700, height: this.state.results.length * 40 + 30, padding:10, backgroundColor: "#eee", boxShadow: "2px 2px 10px rgba(0,0,0,0.5)", display: this.state.results.length > 0 ? 'block' : 'none'}}>{this.state.results}</div>
         </div>
         {content}
