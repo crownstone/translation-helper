@@ -27,7 +27,11 @@ export class TranslationEntry extends Component<any, any> {
 
     this.element      = LANGUAGE_MANAGER.getElement(this.props.language, this.props.file, this.props.entryKey);
     this.initialValue = this.element.value;
-    VARS.forEach((VAR) => { this.hasVars[VAR] = this.initialValue.indexOf(VAR) !== -1; });
+    if (this.initialValue) {
+      VARS.forEach((VAR) => {
+        this.hasVars[VAR] = this.initialValue.indexOf(VAR) !== -1;
+      });
+    }
     this.state        = { value: this.initialValue, shouldBeTheSame: this.element.shouldBeTheSame, backgroundColor: null };
   }
 
