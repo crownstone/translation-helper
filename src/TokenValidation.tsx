@@ -18,6 +18,7 @@ export class TokenValidation extends Component<any, any> {
       <div>
         <h2>Insert token</h2>
         <input
+          style={{width:300}}
           value={this.state.token}
           onChange={(e) => {
             this.setState({token: e.target.value}, () => {

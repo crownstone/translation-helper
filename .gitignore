@@ -3,3 +3,5 @@
 sensitive
 node_modules
 .next
+
+start.sh

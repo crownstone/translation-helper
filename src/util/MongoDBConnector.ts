@@ -1,8 +1,8 @@
 const MongoClient = require('mongodb').MongoClient;
 
 export let mongoConfig = {
-  name:"heroku_9q3jv8v5",
-  url: process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/heroku_9q3jv8v5"
+  name: process.env.MONGODB_NAME || "heroku_9q3jv8v5",
+  url: process.env.MONGODB_URI   || "mongodb://127.0.0.1:27017/heroku_9q3jv8v5"
 }
 
 export class MongoDbConnector {
