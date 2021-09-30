@@ -7,7 +7,7 @@ export let mongoConfig = {
 
 export class MongoDbConnector {
 
-  database = null;
+  database    = null;
   mongoClient = null;
 
   connect() {
