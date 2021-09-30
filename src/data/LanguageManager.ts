@@ -46,10 +46,10 @@ export class LanguageManager {
 
   async download(language) {
     if (language === LANGUAGES.en_us) {
-      return await this._downloadFileFromGit('https://raw.githubusercontent.com/crownstone/crownstone-app/master/js/localization/en/us/en_us.ts')
+      return await this._downloadFileFromGit('https://raw.githubusercontent.com/crownstone/crownstone-app/master/app/ts/localization/en/us/en_us.ts')
     }
     else if (language === LANGUAGES.nl_nl) {
-      return await this._downloadFileFromGit('https://raw.githubusercontent.com/crownstone/crownstone-app/master/js/localization/nl/nl/nl_nl.ts')
+      return await this._downloadFileFromGit('https://raw.githubusercontent.com/crownstone/crownstone-app/master/app/ts/localization/nl/nl/nl_nl.ts')
     }
   }
 
