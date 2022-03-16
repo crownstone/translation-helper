@@ -38,9 +38,13 @@ export class TranslationEntry extends Component<any, any> {
   componentDidMount(): void {
     if (this.props.initialFocus) {
       this.nameInput.focus();
-      this.nameInput.select()
+      this.nameInput.select();
     }
-    this.cleanup.push(eventBus.on("SetFocus" +this.props.language+this.props.file+this.props.entryKey, () => { this.nameInput.focus();}));
+    this.cleanup.push(eventBus.on("SetFocus" + this.props.language + this.props.file + this.props.entryKey, () => {
+      this.nameInput.scrollIntoView();
+
+      this.nameInput.focus();
+    }));
   }
 
   componentWillUnmount() {
