@@ -150,7 +150,4 @@ export class Translation extends Component<any, any> {
       </div>
     )
   }
-
 }
-
-// WGxZZPCc5UYwkkYB5YepUszJNdic3Hkq7zwOGZSAOXXxZEHadxnSod7MgoToCqvs
