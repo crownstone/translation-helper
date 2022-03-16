@@ -11,7 +11,7 @@ export class MongoDbConnector {
   mongoClient = null;
 
   connect() {
-    return new Promise((resolve, reject) => {
+    return new Promise<void>((resolve, reject) => {
 
       let url = mongoConfig.url;
 
