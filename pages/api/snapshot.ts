@@ -1,11 +1,11 @@
 import {validateCrownstoneToken} from "./validate";
 import {MongoDbConnector} from "../../src/util/MongoDBConnector";
 
-export default (req, res) => {
+export default async (req, res) => {
   res.setHeader('Content-Type', 'application/json');
   return validateCrownstoneToken(req)
     .then((result) => {
-      if (!result) { throw "Unauthorized" }
+      if (!result) { throw new Error("Unauthorized"); }
       if (req.method === 'POST') {
         // Process a POST request
         // UPDATE
@@ -41,7 +41,7 @@ export default (req, res) => {
           .catch((err) => {
             res.setHeader('Content-Type', 'application/json');
             res.statusCode = 500;
-            res.end();
+            res.end(`ERROR ${err?.message}`);
           })
       }
       else if (req.method === "GET") {
@@ -70,6 +70,6 @@ export default (req, res) => {
     .catch((err) => {
       res.setHeader('Content-Type', 'application/json');
       res.statusCode = 401;
-      res.end();
+      res.end(`ERROR ${err?.message}`);
     })
 }
