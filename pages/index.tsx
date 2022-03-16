@@ -17,7 +17,10 @@ export default class Home extends Component<any,any> {
       return <TokenValidation callback={(token) => { this.setState({token: token}); }} />;
     }
     else {
-      return <Translation token={this.state.token} />;
+      return <Translation token={this.state.token} clearToken={() => {
+        localStorage.removeItem('accessToken');
+        this.setState({token: null});
+      }} />;
     }
   }
 }

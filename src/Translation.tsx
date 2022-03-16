@@ -27,6 +27,8 @@ export class Translation extends Component<any, any> {
   }
 
   componentDidMount() {
+    window.onresize = () => { this.forceUpdate(); };
+
     FocusManager.init();
     this.eventCleanUp = eventBus.on("RELOADING", () => { this.setState({initialized: false}, () => {
       this.initLanguages();
@@ -128,7 +130,8 @@ export class Translation extends Component<any, any> {
             &nbsp;
             <input type={"button"} value={"Expand all"}   onClick={() => { eventBus.emit("EXPAND_ALL") }} />&nbsp;
             <input type={"button"} value={"Collapse all"} onClick={() => { eventBus.emit("COLLAPSE_ALL") }} />&nbsp;
-            <input type={"button"} value={this.state.hideCompleted === false ? 'Hide finished' : 'Show all'} onClick={() => { this.setState({ hideCompleted: !this.state.hideCompleted }); }} />
+            <input type={"button"} value={this.state.hideCompleted === false ? 'Hide finished' : 'Show all'} onClick={() => { this.setState({ hideCompleted: !this.state.hideCompleted }); }} />&nbsp;
+            <input type={"button"} value={'Log out'} onClick={() => { this.props.clearToken(); }} />&nbsp;
             <div style={{
               zIndex: 1e9,
               position:"absolute", top: 50, left:90, width: 700,
@@ -149,3 +152,5 @@ export class Translation extends Component<any, any> {
   }
 
 }
+
+// WGxZZPCc5UYwkkYB5YepUszJNdic3Hkq7zwOGZSAOXXxZEHadxnSod7MgoToCqvs
