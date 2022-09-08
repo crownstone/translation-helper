@@ -14,7 +14,7 @@ export default class Home extends Component<any,any> {
 
   render() {
     if (this.state.token === null) {
-      return <TokenValidation callback={(token) => { this.setState({token: token}); }} />;
+      return <TokenValidation callback={(token) => { this.setState({token: token}); console.log("SET") }} />;
     }
     else {
       return <Translation token={this.state.token} clearToken={() => {

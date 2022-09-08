@@ -1,6 +1,5 @@
 import React, {Component} from "react";
 import {postData} from "./util/FetchUtil";
-import {eventBus} from "./util/EventBus";
 
 
 export class TokenValidation extends Component<any, any> {

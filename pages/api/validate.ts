@@ -2,10 +2,8 @@ import {getData} from "../../src/util/FetchUtil";
 
 
 export default (req, res) => {
-
   return validateCrownstoneToken(req)
     .then((result) => {
-
       if (result) {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
@@ -31,7 +29,7 @@ export const validateCrownstoneToken = function(req) {
     return getData("https://cloud.crownstone.rocks/api/users/userId", {access_token: token} )
       .then((userId) => {
         if (userId.indexOf("error") === -1) {
-          let cleanedId = userId.replace(/"/g,'')
+          let cleanedId = String(userId).replace(/"/g,'')
           if (whitelistedIds.indexOf(cleanedId) !== -1) {
             return true;
           }
