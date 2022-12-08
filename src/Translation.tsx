@@ -33,12 +33,12 @@ export class Translation extends Component<any, any> {
     this.eventCleanUp = eventBus.on("RELOADING", () => { this.setState({initialized: false}, () => {
       this.initLanguages();
     })});
-    LANGUAGE_MANAGER.init(this.props.token)
+    LANGUAGE_MANAGER.init()
       .then(() => { this.setState({initialized: true}); })
   }
 
   initLanguages() {
-    LANGUAGE_MANAGER.init(this.props.token)
+    LANGUAGE_MANAGER.init()
       .then(() => { this.setState({initialized: true}); })
   }
 

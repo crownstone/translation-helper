@@ -13,14 +13,12 @@ export const SHOULD_BE_THE_SAME = "__stringSameAsBaseLanguage";
 
 export class LanguageManager {
 
-  token = null;
   containers = {};
   baseLanguage = LANGUAGES.en_us;
 
   statistics = { files: {} };
 
-  async init(token) {
-    this.token = token;
+  async init() {
     let nl_nl = {};
     let en_us = {};
 
@@ -33,13 +31,13 @@ export class LanguageManager {
       else {
         nl_nl = nlFromDatabase;
       }
-      this.containers[LANGUAGES.en_us] = new LanguageContainer(LANGUAGES.en_us, en_us, this.token);
-      this.containers[LANGUAGES.nl_nl] = new LanguageContainer(LANGUAGES.nl_nl, nl_nl, this.token);
+      this.containers[LANGUAGES.en_us] = new LanguageContainer(LANGUAGES.en_us, en_us);
+      this.containers[LANGUAGES.nl_nl] = new LanguageContainer(LANGUAGES.nl_nl, nl_nl);
     }
     catch {
       alert("Not authorized")
-      this.containers[LANGUAGES.en_us] = new LanguageContainer(LANGUAGES.en_us, en_us, this.token);
-      this.containers[LANGUAGES.nl_nl] = new LanguageContainer(LANGUAGES.nl_nl, nl_nl, this.token);
+      this.containers[LANGUAGES.en_us] = new LanguageContainer(LANGUAGES.en_us, en_us);
+      this.containers[LANGUAGES.nl_nl] = new LanguageContainer(LANGUAGES.nl_nl, nl_nl);
     }
   }
 
@@ -88,7 +86,7 @@ export class LanguageManager {
 
   async getFromDatabase(language) {
     if (language === LANGUAGES.nl_nl) {
-      let data = await getData("/api/snapshot", {token: this.token, language: LANGUAGES.nl_nl});
+      let data = await getData("/api/snapshot", {language: LANGUAGES.nl_nl});
       data = JSON.parse(data);
       if (data.length == 0) {
         return null;

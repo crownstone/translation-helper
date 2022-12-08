@@ -7,14 +7,12 @@ export const VARS = ["|VAR_1|","|VAR_2|","|VAR_3|","|VAR_4|","|VAR_5|","|VAR_6|"
 
 export class LanguageContainer {
 
-  token    = null;
   language = null;
   data     = {};
 
-  constructor(language, data, token) {
+  constructor(language, data) {
     this.language = language;
     this.data = data;
-    this.token = token;
   }
 
   getElement(file, key) {
@@ -33,7 +31,7 @@ export class LanguageContainer {
   }
 
   persist() {
-    return postDataText('/api/snapshot', {token: this.token, data: this.data, language: this.language})
+    return postDataText('/api/snapshot', {data: this.data, language: this.language})
       .then(() => {
         eventBus.emit("DATA_UPDATED");
       })

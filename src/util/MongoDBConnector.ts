@@ -1,8 +1,8 @@
 const MongoClient = require('mongodb').MongoClient;
 
 export let mongoConfig = {
-  name: process.env.MONGODB_NAME || "heroku_9q3jv8v5",
-  url: process.env.MONGODB_URI   || "mongodb://127.0.0.1:27017/heroku_9q3jv8v5"
+  name: "crownstone_translations",
+  url:  "mongodb://127.0.0.1:27017/"
 }
 
 export class MongoDbConnector {
@@ -14,7 +14,6 @@ export class MongoDbConnector {
     return new Promise<void>((resolve, reject) => {
 
       let url = mongoConfig.url;
-
       // Use connect method to connect to the server
       MongoClient.connect(url, (err, client) => {
         if ( err ) { return reject(err); }
